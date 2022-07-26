@@ -10,16 +10,17 @@ hr{
 h1 {
     font-size: medium;
 }
+
 .box {
     width: 48px;
     height: 48px;
     border-radius: 17%;
     margin: 1px;
-    color: white;
     font-size: x-large ;
     display: flex;
     align-items: center;
     justify-content: center;
+    color:white
 }
 
 .box-def {
@@ -27,7 +28,8 @@ h1 {
 }
 
 .box-usr {
-    background-color: black;
+    background-color: #A59B66;
+    color: black;
 }
 
 .box-wrong {
@@ -36,12 +38,13 @@ h1 {
 
 .hline {
     margin:0;
-    border: solid blue;
+    border: solid gray;
     border-bottom: 0;
 }
 .vline {
     margin:0;
-    border: solid blue;
+    border: gray solid;
+    border-radius: 100px;
     border-left: 0;
     height: auto;
     width: 1px;
@@ -50,7 +53,7 @@ h1 {
 #board {
     width: 458px;
     height: 455px;
-    background-color: red;
+    background-color: black;
     border-radius: 2%;
     margin: 0 auto;
     display: flex;

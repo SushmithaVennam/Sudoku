@@ -55,23 +55,31 @@ function checkTiles() {
 }
 
 function checkGameFininsh() {
-    // var rows = ["", "", "", "", "", "", "", "", ""];
+    var rows = "";
     // var cols = ["", "", "", "", "", "", "", "", ""];
     for (r = 1 ; r < 10 ; r++) {
+        rows = "";
         for (c = 1 ; c < 10 ; c++) {
             tile = document.getElementById(r+"x"+c);
             if(tile.innerText == null) { 
                 return;
             }
-            // rows += tile.innerText;
-            // cols += tile.innerText;
+            rows += tile.innerText;
         }    
+        if (rows !=sln[r-1]) {
+            return;
+        }
     }
 
+    title = document.getElementById("title");
+    title.innerText = "SUDOKU Solved";
     for (r = 1 ; r < 10 ; r++) {
         for (c = 1 ; c < 10 ; c++) {
             tile = document.getElementById(r+"x"+c);
-            tile.classList.add("box-def");
+            if (tile.classList.contains("box-usr")) {
+                tile.classList.add("box-def");
+                tile.classList.remove("box-usr");
+            }
         }
     }    
 }
