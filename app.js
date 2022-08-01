@@ -1,12 +1,22 @@
-var qn=["861--3254",
-        "--3-4---6",
-        "-----8---",
-        "-----4--7",
-        "--2-8-9--",
-        "6--1-----",
-        "---4-----",
-        "4---1-7--",
-        "-5-6--439"];
+// var qn=["861--3254",
+//         "--3-4---6",
+//         "-----8---",
+//         "-----4--7",
+//         "--2-8-9--",
+//         "6--1-----",
+//         "---4-----",
+//         "4---1-7--",
+//         "-5-6--439"];
+
+var qn = ["86-793254",
+        "923541876",
+        "547268193",
+        "385924617",
+        "712386945",
+        "694157328",
+        "276439581",
+        "439815762",
+        "158672439"];
 
 var sln = ["861793254",
             "923541876",
@@ -61,12 +71,17 @@ function setGame() {
             document.getElementById("board").appendChild(line)
         }
     }
+    checkNumbersToDisable();
 }
 
 var numselected = null;
 var tileselected = null;
 
 function selectNumber(){
+    if ("box-dis" in this.classList) {
+        return;
+    }
+
     if(numselected != null){
         numselected.classList.remove("box-def");
         numselected.classList.add("box-usr");
@@ -74,6 +89,31 @@ function selectNumber(){
     numselected = this;
     numselected.classList.add("box-def");
     numselected.classList.remove("box-usr");
+}
+
+function checkNumbersToDisable() {
+    var rows = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (r = 1 ; r < 10 ; r++) {
+        for (c = 1 ; c < 10 ; c++) {
+            tile = document.getElementById(r+"x"+c);
+            if(tile.innerText != null) { 
+                rows[parseInt(tile.innerText)]++;
+            }
+        }
+    }
+
+    for (let i = 1 ; i < 10 ; i++) {
+        number = document.getElementById(i);
+        if(rows[i] == 9) {
+            number.classList.add("box-dis")
+            number.classList.remove("box-def")
+        } else {
+            if ("box-dis" in number.classList) {
+                number.classList.remove("box-dis")
+                number.classList.add("box-def")
+            }
+        }
+    }
 }
 
 function checkGameFininsh() {
@@ -115,6 +155,7 @@ function selectTile(){
     }
 
     this.innerText = numselected.id;
+    checkNumbersToDisable();
     checkGameFininsh();
 }
 
