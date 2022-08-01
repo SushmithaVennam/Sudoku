@@ -27,12 +27,20 @@ var sln = ["861793254",
             "276439581",
             "439815762",
             "158672439"];           
-            
+
+var wrongs = 0;
+var numselected = null;
+var tileselected = null;
+
 window.onload = function() {
     setGame();
 }
 
 function setGame() {
+    wrongs = 0;
+    numselected = null;
+    tileselected = null;
+
     for(let i = 1 ; i < 10 ; i++) {
         let number = document.createElement("div");
         number.id = i;
@@ -74,9 +82,6 @@ function setGame() {
     checkNumbersToDisable();
 }
 
-var numselected = null;
-var tileselected = null;
-
 function selectNumber(){
     if ("box-dis" in this.classList) {
         return;
@@ -104,13 +109,20 @@ function checkNumbersToDisable() {
 
     for (let i = 1 ; i < 10 ; i++) {
         number = document.getElementById(i);
-        if(rows[i] == 9) {
-            number.classList.add("box-dis")
+        if(rows[i] >= 9) {
             number.classList.remove("box-def")
-        } else {
-            if ("box-dis" in number.classList) {
-                number.classList.remove("box-dis")
-                number.classList.add("box-def")
+            if (numselected.innerText == number.innerText) {
+                numselected = null;
+            }
+            if (number.classList.contains("box-usr")) {
+                number.classList.remove("box-usr");                
+            }
+            number.classList.add("box-dis")
+        } else if (number.classList.contains("box-dis")) {
+            number.classList.remove("box-dis")
+            number.classList.add("box-usr")
+            if (number.classList.contains("box-def")) {
+                number.classList.remove("box-def");                
             }
         }
     }
@@ -153,9 +165,24 @@ function selectTile(){
     if(this.classList.contains("box-def")) {
         return;
     }
-
+    // right_ans = row
+    r = parseInt(this.id.split('x'));
+    c = parseInt(this.id.split('x')[1]);
+    if (this.innerText != null) {
+        if(!sln[r][c].equals(this.innerText)) {
+            wrongs--;
+        }    
+    }
     this.innerText = numselected.id;
+    if (!sln[r][c].equals(this.innerText)) {
+        wrongs++;
+    } else {
+        checkGameFininsh();
+    }
+
     checkNumbersToDisable();
-    checkGameFininsh();
+    if (wrongs > 5) {
+        setGame();
+    }
 }
 
