@@ -26,7 +26,7 @@ var sln = ["861793254",
             "694157328",
             "276439581",
             "439815762",
-            "158672439"];           
+            "158672439"];
 
 var wrongs = 0;
 var numselected = null;
@@ -79,7 +79,51 @@ function setGame() {
             document.getElementById("board").appendChild(line)
         }
     }
+    reloadBtn = document.getElementById("ReloadButton");
+    reloadBtn.addEventListener('click', resetGame);
     checkNumbersToDisable();
+}
+
+function resetGame() {
+    for(let i = 1 ; i < 10 ; i++) {
+        let number = document.getElementById(i);
+        if(number.classList.contains("box-def")){
+            number.classList.remove("box-def");
+        }
+        if(number.classList.contains("box-dis")){
+            number.classList.remove("box-dis");
+        }
+        if (!number.classList.contains("box-usr")){
+            number.classList.add("box-usr");
+        }
+    }
+
+    for(let i = 1 ; i < 10 ; i++) {
+        var row = qn[i-1];
+        for(let j = 1; j < 10 ; j++) {
+            let number = document.getElementById(i+"x"+j);
+
+            var num = row[j-1];
+            if (num != "-") {
+                number.innerText = num;
+                number.classList.add("box-def");
+            } else {
+                number.innerText = "";
+                number.classList.add("box-usr");
+            }
+        }
+    }
+
+    if(numselected != null){
+        numselected.classList.remove("box-def");
+        numselected.classList.add("box-usr");
+        numselected = null;
+    }
+
+    wrongs = 0;
+    numselected = null;
+    tileselected = null;
+
 }
 
 function selectNumber(){
@@ -115,14 +159,14 @@ function checkNumbersToDisable() {
                 numselected = null;
             }
             if (number.classList.contains("box-usr")) {
-                number.classList.remove("box-usr");                
+                number.classList.remove("box-usr");
             }
             number.classList.add("box-dis")
         } else if (number.classList.contains("box-dis")) {
             number.classList.remove("box-dis")
             number.classList.add("box-usr")
             if (number.classList.contains("box-def")) {
-                number.classList.remove("box-def");                
+                number.classList.remove("box-def");
             }
         }
     }
@@ -168,13 +212,13 @@ function selectTile(){
     // right_ans = row
     r = parseInt(this.id.split('x'));
     c = parseInt(this.id.split('x')[1]);
-    if (this.innerText != null) {
-        if(!sln[r][c].equals(this.innerText)) {
+    if (this.innerText != null && this.innerText != "") {
+        if(sln[r-1][c-1] != this.innerText) {
             wrongs--;
-        }    
+        }
     }
     this.innerText = numselected.id;
-    if (!sln[r][c].equals(this.innerText)) {
+    if (sln[r-1][c-1] != this.innerText) {
         wrongs++;
     } else {
         checkGameFininsh();
@@ -182,7 +226,13 @@ function selectTile(){
 
     checkNumbersToDisable();
     if (wrongs > 5) {
-        setGame();
+        popup = document.getElementById("reload-popup");
+        popup.classList.toggle("active")
     }
 }
 
+function togglePopup() {
+    popup = document.getElementById("reload-popup")
+    popup.classList.toggle("active")
+    resetGame();
+  }
