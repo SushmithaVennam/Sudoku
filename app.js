@@ -32,25 +32,32 @@ var wrongs = 0;
 var numselected = null;
 var tileselected = null;
 
+
+// The onload event occurs when an object has been loaded.
 window.onload = function() {
     setGame();
 }
-
+// To draw game elements.
 function setGame() {
     wrongs = 0;
     numselected = null;
     tileselected = null;
 
-    for(let i = 1 ; i < 10 ; i++) {
+    // To draw number-row
+    for(let i = 1 ; i < 10 ; i++) {     
+        // To create each box                        
         let number = document.createElement("div");
         number.id = i;
         number.innerText = i;
-        number.addEventListener("click", selectNumber);
+        // Adding event-listener for number box
+        number.addEventListener("click", selectNumber);         
         number.classList.add("box");
         number.classList.add("box-usr");
+        // Adding number as a child to that row
         document.getElementById("digits").appendChild(number);
     }
 
+    // Add boxes to the sudoku puzzle
     for(let i = 1 ; i < 10 ; i++) {
         var row = qn[i-1];
         for(let j = 1; j < 10 ; j++) {
@@ -66,19 +73,21 @@ function setGame() {
             number.classList.add("box");
             document.getElementById("board").appendChild(number);
             number.addEventListener("click",selectTile);
+            //Adding vertical line after every third column and sixth-column
             if (j == 3 || j == 6) {
                 let line = document.createElement("hr");
                 line.classList.add("vline");
                 document.getElementById("board").appendChild(line);
             }
         }
-
+        // Adding horizontal row after third-row and sixth-row
         if(i == 3 || i == 6) {
             let line = document.createElement("hr");
             line.classList.add("hline");
             document.getElementById("board").appendChild(line)
         }
     }
+    // Disabling the number once it is used for 9 times.
     checkNumbersToDisable();
 }
 
@@ -111,7 +120,7 @@ function checkNumbersToDisable() {
         number = document.getElementById(i);
         if(rows[i] >= 9) {
             number.classList.remove("box-def")
-            if (numselected.innerText == number.innerText) {
+            if (numselected!= null && numselected.innerText == number.innerText) {
                 numselected = null;
             }
             if (number.classList.contains("box-usr")) {
@@ -127,7 +136,7 @@ function checkNumbersToDisable() {
         }
     }
 }
-
+// checking everytime the user has given correct input
 function checkGameFininsh() {
     var rows = "";
     for (r = 1 ; r < 10 ; r++) {
@@ -166,15 +175,15 @@ function selectTile(){
         return;
     }
     // right_ans = row
-    r = parseInt(this.id.split('x'));
-    c = parseInt(this.id.split('x')[1]);
-    if (this.innerText != null) {
-        if(!sln[r][c].equals(this.innerText)) {
+    r = parseInt(this.id.split('x')) -1;
+    c = parseInt(this.id.split('x')[1]) -1;
+    if (this.innerText != null && this.innerText != "") {
+        if(sln[r][c] !=this.innerText) {
             wrongs--;
         }    
     }
     this.innerText = numselected.id;
-    if (!sln[r][c].equals(this.innerText)) {
+    if (sln[r][c] != this.innerText) {
         wrongs++;
     } else {
         checkGameFininsh();
