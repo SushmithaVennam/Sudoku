@@ -14,5 +14,16 @@
     <div id="board"></div>
     <br />
     <div id="digits"></div>
+    <hr />
+    <input class="Button" type="button" value="Reload" id = "ReloadButton">
+    <div class="popup" id="reload-popup">
+      <div class="overlay"></div>
+      <div class="content">
+        <div class="close-btn" onclick="togglePopup()">&times;</div>
+        <h1>Max Errors Exceeded</h1>
+        <p>You have made more than 5 errors.</p>
+        <p>Please close this Pop-up to Reload game.</p>
+      </div>      
+    </div>
   </body>
 </html>
